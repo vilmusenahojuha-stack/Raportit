@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kuljetusraportti</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>.app-locked{display:none;}</style>
+</head>
+<body>
+
+<div id="authBox" class="authbox">
+  <div class="card authcard">
+    <h2>Kirjaudu sisään</h2>
+
+    <div id="g_id_onload"
+         data-client_id="767469865393-5m24jc369g65fh5d51mcu1moocjd27r9.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false"></div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"></div>
+
+    <div id="authStatus" class="authstatus"></div>
+    <button id="btnLogout" type="button" class="btn btn-ghost" style="display:none;">Kirjaudu ulos</button>
+  </div>
+</div>
+
+<div id="appRoot" class="page app-locked">
+  <header class="header card">
+    <div class="header-top">
+      <h1>Kuljetusraportti</h1>
+      <div class="pill" id="pillUser"></div>
+    </div>
+
+    <div class="grid">
+      <label>Päivämäärä
+        <input type="date" id="pvm">
+      </label>
+
+      <label>Auto nro
+        <input id="auto" placeholder="esim. GPG-830">
+      </label>
+
+      <label>Aloitus km
+        <input type="number" id="aloitusKm" placeholder="viimeisin km">
+      </label>
+    </div>
+
+    <div class="kmbar">
+      <div class="kmbar-left">
+        <div class="kmlabel">Aloitus km</div>
+        <div class="kmvalue" id="kmValue">—</div>
+      </div>
+      <button id="btnSetKm" class="btn btn-small" type="button">Aseta / muokkaa</button>
+      <div class="kmhint">Kuorma 1 kysyy km:n tarvittaessa tallennettaessa. Kuorma 6 kysyy aina km:n tallennettaessa kuormille 7–12.</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="card tablecard">
+      <table id="raportti">
+        <thead>
+          <tr>
+            <th>#</th><th>Kuorma nro</th><th>R2 / Asiakas</th><th>Rahtikirja</th>
+            <th>Lastaus pvm</th><th>Lastauspaikka</th>
+            <th>Purku pvm</th><th>Purku paikka</th>
+            <th>Kuljettaja</th><th>Määrä (m³)</th><th>Tonnit</th><th>Tuote</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="buttons">
+      <button id="syncFailedBtn" class="btn">Lähetä epäonnistuneet</button>
+      <button id="finishBtn" class="btn btn-danger">Päätä raportti</button>
+    </div>
+
+    <p id="statusMsg" class="status"></p>
+  </main>
+</div>
+
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-content card">
+    <div class="modal-head">
+      <h2>Kuorman tiedot</h2>
+      <button id="closeModalBtnX" class="iconbtn" type="button" aria-label="Sulje">✕</button>
+    </div>
+
+    <form id="kuormaForm" class="grid">
+      <label>Kuorma nro <input id="loadNo" disabled></label>
+      <label>R2 / Asiakas <input id="r2"></label>
+      <label>Rahtikirja <input id="rahti"></label>
+
+      <label>Lastaus pvm <input type="date" id="lastausPvm"></label>
+      <label>Lastauspaikka
+        <input id="lastausPaikka" list="lastausList" autocomplete="off">
+        <datalist id="lastausList"></datalist>
+      </label>
+
+      <label>Purku pvm <input type="date" id="purkuPvm"></label>
+      <label>Purku paikka
+        <input id="purkuPaikka" list="purkuList" autocomplete="off">
+        <datalist id="purkuList"></datalist>
+      </label>
+
+      <label>Kuljettaja
+        <select id="kuljettaja"></select>
+      </label>
+
+      <label>Määrä (m³) <input id="maara"></label>
+      <label>Tonnit <input type="number" id="tonnit" step="0.01"></label>
+      <label>Tuote
+        <input id="tuote" placeholder="esim. hake / sora" list="tuoteList" autocomplete="off">
+        <datalist id="tuoteList"></datalist>
+      </label>
+    </form>
+
+    <div class="modal-buttons">
+      <button id="saveKuormaBtn" class="btn" type="button">Tallenna rivi</button>
+      <button id="closeModalBtn" class="btn btn-ghost" type="button">Sulje</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
