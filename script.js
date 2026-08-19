@@ -1,4 +1,3 @@
-Queue serialization checks OK
 const API_URL="https://script.google.com/macros/s/AKfycbzPnC8CiCZjfHE2UlbG_i38x_dHL-JYt-essUssKaoAjao31kdaCRKVD1R7RqiLYhPQ/exec";
 const SESSION_KEY="kuljetuskirjaus_session_v1",QUEUE_KEY="kuljetuskirjaus_queue_v1",SUGGEST_KEY="kuljetuskirjaus_suggestions_v1",DRIVER_KEY="kuljetuskirjaus_driver_v1";
 const $=id=>document.getElementById(id);let session=null,recent=[],pendingSave=null,kmMode="next",flushing=false;
@@ -32,7 +31,7 @@ async function api(body){const c=new AbortController(),t=setTimeout(()=>c.abort(
 function saveSuggestions(d){let s;try{s=JSON.parse(localStorage.getItem(SUGGEST_KEY)||"{}") }catch{s={}};[["lastaus",d.lastausPaikka],["purku",d.purkuPaikka],["tuote",d.tuote]].forEach(([k,x])=>{if(x)s[k]=[...new Set([...(s[k]||[]),x])].slice(-30)});localStorage.setItem(SUGGEST_KEY,JSON.stringify(s));loadSuggestions()}
 function loadSuggestions(){let s;try{s=JSON.parse(localStorage.getItem(SUGGEST_KEY)||"{}") }catch{s={}};[["lastausList",s.lastaus],["purkuList",s.purku],["tuoteList",s.tuote]].forEach(([id,a])=>$(id).innerHTML=(a||[]).map(x=>`<option value="${esc(x)}">`).join(""))}
 function msg(id,text,type){const e=$(id);e.textContent=text;e.className="message "+(type||"")}
-function busy(id,on){$(id).disabled=on}
+function busy(id,on){const b=$(id);b.disabled=on;b.classList.toggle("loading",on);b.setAttribute("aria-busy",on?"true":"false");if(id==="loginBtn")b.textContent=on?"Kirjaudutaan…":"Kirjaudu"}
 function dateFi(x){const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(x||"");return m?`${m[3]}.${m[2]}.${m[1]}`:(x||"")}
 function esc(x){return String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function errorText(e){return({bad_pin:"Väärä PIN-koodi.",locked:"Liian monta yritystä. Odota 10 minuuttia.",missing_pin:"PIN-koodi puuttuu.",missing_auth:"Apps Scriptissä on vielä vanha kirjautumisversio. Kopioi uusi koodi.gs ja julkaise uusi versio.",pin_not_configured:"Auton PIN-koodia ei ole asetettu Apps Scriptiin.",invalid_session:"Kirjautuminen on vanhentunut.",wrong_vehicle:"Istunto kuuluu toiselle autolle."})[e]||String(e||"Tuntematon virhe")}
