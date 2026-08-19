@@ -1,4 +1,4 @@
-const API_URL="https://script.google.com/macros/s/AKfycbymG_aj2bW1EHmVVzKqeiKgcHrsEz2CRwjrDz9QlrOmR6_35wwzRfpP6Y2jh4mtZOWG/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbzPnC8CiCZjfHE2UlbG_i38x_dHL-JYt-essUssKaoAjao31kdaCRKVD1R7RqiLYhPQ/exec";
 const SESSION_KEY="kuljetuskirjaus_session_v1",QUEUE_KEY="kuljetuskirjaus_queue_v1",SUGGEST_KEY="kuljetuskirjaus_suggestions_v1",DRIVER_KEY="kuljetuskirjaus_driver_v1";
 const $=id=>document.getElementById(id);let session=null,recent=[],pendingSave=null,kmMode="next";
 document.addEventListener("DOMContentLoaded",init);
