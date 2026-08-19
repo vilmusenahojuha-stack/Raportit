@@ -34,4 +34,4 @@ function msg(id,text,type){const e=$(id);e.textContent=text;e.className="message
 function busy(id,on){$(id).disabled=on}
 function dateFi(x){const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(x||"");return m?`${m[3]}.${m[2]}.${m[1]}`:(x||"")}
 function esc(x){return String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function errorText(e){return({bad_pin:"Väärä PIN-koodi.",locked:"Liian monta yritystä. Odota 10 minuuttia.",missing_pin:"PIN-koodi puuttuu.",pin_not_configured:"Auton PIN-koodia ei ole asetettu Apps Scriptiin.",invalid_session:"Kirjautuminen on vanhentunut.",wrong_vehicle:"Istunto kuuluu toiselle autolle."})[e]||String(e||"Tuntematon virhe")}
+function errorText(e){return({bad_pin:"Väärä PIN-koodi.",locked:"Liian monta yritystä. Odota 10 minuuttia.",missing_pin:"PIN-koodi puuttuu.",missing_auth:"Apps Scriptissä on vielä vanha kirjautumisversio. Kopioi uusi koodi.gs ja julkaise uusi versio.",pin_not_configured:"Auton PIN-koodia ei ole asetettu Apps Scriptiin.",invalid_session:"Kirjautuminen on vanhentunut.",wrong_vehicle:"Istunto kuuluu toiselle autolle."})[e]||String(e||"Tuntematon virhe")}
