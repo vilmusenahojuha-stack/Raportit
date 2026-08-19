@@ -1,133 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kuljetusraportti</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <style>.app-locked{display:none;}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#16070b">
+  <title>Kuljetuskirjaus</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div id="authBox" class="authbox">
-  <div class="card authcard">
-    <h2>Kirjaudu sisään</h2>
-
-    <div id="g_id_onload"
-         data-client_id="767469865393-5m24jc369g65fh5d51mcu1moocjd27r9.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse"
-         data-auto_prompt="false"></div>
-
-    <div class="g_id_signin"
-         data-type="standard"
-         data-size="large"
-         data-theme="outline"
-         data-text="sign_in_with"
-         data-shape="rectangular"></div>
-
-    <div id="authStatus" class="authstatus"></div>
-    <button id="btnLogout" type="button" class="btn btn-ghost" style="display:none;">Kirjaudu ulos</button>
-  </div>
-</div>
-
-<div id="appRoot" class="page app-locked">
-  <header class="header card">
-    <div class="header-top">
-      <h1>Kuljetusraportti</h1>
-      <div class="pill" id="pillUser"></div>
-    </div>
-
-    <div class="grid">
-      <label>Päivämäärä
-        <input type="date" id="pvm">
-      </label>
-
-      <label>Auto nro
-        <input id="auto" placeholder="esim. GPG-830">
-      </label>
-
-      <label>Aloitus km
-        <input type="number" id="aloitusKm" placeholder="viimeisin km">
-      </label>
-    </div>
-
-    <div class="kmbar reportbar">
-      <div class="kmbar-left">
-        <div class="kmlabel">Raportti nro</div>
-        <div class="kmvalue" id="reportNoValue">—</div>
+  <main class="app">
+    <section id="loginView" class="login-wrap">
+      <div class="card login-card">
+        <h1>Kuljetuskirjaus</h1>
+        <p class="muted">Valitse auto ja anna auton PIN-koodi.</p>
+        <label>Auto nro
+          <select id="loginAuto">
+            <option value="ISS-440">ISS-440</option>
+            <option value="GPG-830">GPG-830</option>
+          </select>
+        </label>
+        <label>PIN-koodi
+          <input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12">
+        </label>
+        <button id="loginBtn" class="btn btn-blue btn-big" type="button">Kirjaudu</button>
+        <p id="loginStatus" class="message" aria-live="polite"></p>
       </div>
-      <div class="kmhint">Raporttinumero haetaan automaattisesti aktiivisesta raportista Sheetsistä.</div>
-    </div>
-  </header>
+    </section>
 
-  <main>
-    <div class="card tablecard">
-      <table id="raportti">
-        <thead>
-          <tr>
-            <th>#</th><th>Kuorma nro</th><th>R2 / Asiakas</th><th>Rahtikirja</th>
-            <th>Lastaus pvm</th><th>Lastauspaikka</th>
-            <th>Purku pvm</th><th>Purku paikka</th>
-            <th>Kuljettaja</th><th>Määrä (m³)</th><th>Tonnit</th><th>Tuote</th><th>Status</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <section id="mainView" class="view hidden">
+      <header class="topbar card">
+        <div>
+          <span class="label">Auto nro</span>
+          <strong id="currentAuto" class="top-value">—</strong>
+        </div>
+        <div class="right">
+          <span class="label">Km</span>
+          <strong id="currentKm" class="top-value">—</strong>
+        </div>
+      </header>
 
-    <div class="buttons">
-      <button id="syncFailedBtn" class="btn">Lähetä epäonnistuneet</button>
-      <button id="finishBtn" class="btn btn-danger">Päätä raportti</button>
-    </div>
-
-    <p id="statusMsg" class="status"></p>
-  </main>
-</div>
-
-<div id="modal" class="modal hidden" role="dialog" aria-modal="true">
-  <div class="modal-content card">
-    <div class="modal-head">
-      <h2>Kuorman tiedot</h2>
-      <button id="closeModalBtnX" class="iconbtn" type="button" aria-label="Sulje">✕</button>
-    </div>
-
-    <form id="kuormaForm" class="grid">
-      <label>Kuorma nro <input id="loadNo" disabled></label>
-      <label>R2 / Asiakas <input id="r2"></label>
-      <label>Rahtikirja <input id="rahti"></label>
-
-      <label>Lastaus pvm <input type="date" id="lastausPvm"></label>
-      <label>Lastauspaikka
-        <input id="lastausPaikka" list="lastausList" autocomplete="off">
+      <section class="card entry-card">
+        <div class="section-head">
+          <h1>Uusi kuorma</h1>
+          <span id="nextLoadNo" class="load-badge">Kuorma —</span>
+        </div>
+        <form id="loadForm" class="entry-grid" novalidate>
+          <label>R2 / Asiakas<input id="r2" autocomplete="off"></label>
+          <label>Rahtikirja<input id="rahti" autocomplete="off"></label>
+          <label>Lastaus pvm<input id="lastausPvm" type="date"></label>
+          <label>Lastauspaikka<input id="lastausPaikka" list="lastausList" autocomplete="off"></label>
+          <label>Purku pvm<input id="purkuPvm" type="date"></label>
+          <label>Purku paikka<input id="purkuPaikka" list="purkuList" autocomplete="off"></label>
+          <label>Kuljettaja
+            <select id="kuljettaja">
+              <option>Juha</option><option>Tommi</option><option>Janne</option>
+            </select>
+          </label>
+          <label>Määrä (m³)<input id="maara" inputmode="decimal"></label>
+          <label>Tonnit<input id="tonnit" inputmode="decimal"></label>
+          <label>Tuote<input id="tuote" list="tuoteList" autocomplete="off"></label>
+          <button id="saveBtn" class="btn btn-green btn-big save-btn" type="submit">Tallenna kuorma</button>
+        </form>
         <datalist id="lastausList"></datalist>
-      </label>
-
-      <label>Purku pvm <input type="date" id="purkuPvm"></label>
-      <label>Purku paikka
-        <input id="purkuPaikka" list="purkuList" autocomplete="off">
         <datalist id="purkuList"></datalist>
-      </label>
-
-      <label>Kuljettaja
-        <select id="kuljettaja"></select>
-      </label>
-
-      <label>Määrä (m³) <input id="maara"></label>
-      <label>Tonnit <input type="number" id="tonnit" step="0.01"></label>
-      <label>Tuote
-        <input id="tuote" placeholder="esim. hake / sora" list="tuoteList" autocomplete="off">
         <datalist id="tuoteList"></datalist>
-      </label>
-    </form>
+        <p id="saveStatus" class="message" aria-live="polite"></p>
+      </section>
 
-    <div class="modal-buttons">
-      <button id="saveKuormaBtn" class="btn" type="button">Tallenna rivi</button>
-      <button id="closeModalBtn" class="btn btn-ghost" type="button">Sulje</button>
+      <section class="card recent-card">
+        <div class="section-head">
+          <h2>8 edellistä kuormaa</h2>
+          <button id="refreshBtn" class="btn btn-small" type="button">Päivitä</button>
+        </div>
+        <div id="recentLoads" class="recent-list"></div>
+      </section>
+
+      <div class="bottom-actions">
+        <button id="retryBtn" class="btn" type="button">Lähetä odottavat</button>
+        <button id="logoutBtn" class="btn btn-ghost" type="button">Vaihda autoa</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="kmModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="kmTitle">
+    <div class="modal-sheet card">
+      <h2 id="kmTitle">Kuusi kuormaa täynnä</h2>
+      <p id="kmPromptText">Anna seuraavien kuuden kuorman aloituskilometrit.</p>
+      <label>Uusi km-lukema<input id="nextKmInput" type="number" inputmode="numeric"></label>
+      <div class="modal-actions">
+        <button id="kmCancelBtn" class="btn btn-ghost" type="button">Peruuta</button>
+        <button id="kmSaveBtn" class="btn btn-blue" type="button">Jatka tallennusta</button>
+      </div>
     </div>
   </div>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
