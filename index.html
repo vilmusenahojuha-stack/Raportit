@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#16070b">
   <title>Kuljetuskirjaus</title>
-  <link rel="stylesheet" href="style.css?v=20260819-8">
+  <link rel="stylesheet" href="style.css?v=20260820-9">
 </head>
 <body>
   <main class="app">
@@ -35,7 +35,10 @@
         </div>
         <div class="service-block">
           <span class="label">Seuraava huolto</span>
-          <strong id="nextService" class="service-value">Ei merkittyä huoltoa</strong>
+          <div class="service-line">
+            <strong id="nextService" class="service-value">Ei merkittyä huoltoa</strong>
+            <button id="completeServiceBtn" class="btn btn-small service-done hidden" type="button">Kuittaa tehdyksi</button>
+          </div>
         </div>
         <div class="right">
           <span class="label">Km</span>
@@ -101,6 +104,6 @@
       </div>
     </div>
   </div>
-  <script src="script.js?v=20260819-8"></script>
+  <script src="script.js?v=20260820-9"></script>
 </body>
 </html>
