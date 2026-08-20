@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#16070b">
   <title>Kuljetuskirjaus</title>
-  <link rel="stylesheet" href="style.css?v=20260820-9">
+  <link rel="stylesheet" href="style.css?v=20260820-10">
 </head>
 <body>
   <main class="app">
@@ -20,7 +20,7 @@
           </select>
         </label>
         <label>PIN-koodi
-          <input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12">
+          <input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="new-password" autocorrect="off" autocapitalize="none" spellcheck="false" maxlength="12">
         </label>
         <button id="loginBtn" class="btn btn-blue btn-big" type="button">Kirjaudu</button>
         <p id="loginStatus" class="message" aria-live="polite"></p>
@@ -54,9 +54,9 @@
             <span id="nextLoadNo" class="load-badge">Kuorma —</span>
           </div>
         </div>
-        <form id="loadForm" class="entry-grid" novalidate>
-          <label>R2 / Asiakas<input id="r2" autocomplete="off"></label>
-          <label>Rahtikirja<input id="rahti" autocomplete="off"></label>
+        <form id="loadForm" class="entry-grid" autocomplete="off" novalidate>
+          <label>R2 / Asiakas<input id="r2" autocomplete="new-password" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="none"></label>
+          <label>Rahtikirja<input id="rahti" autocomplete="new-password" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="none"></label>
           <label>Lastaus pvm<input id="lastausPvm" type="date"></label>
           <label>Lastauspaikka<input id="lastausPaikka" list="lastausList" autocomplete="off"></label>
           <label>Purku pvm<input id="purkuPvm" type="date"></label>
@@ -66,10 +66,10 @@
               <option>Juha</option><option>Tommi</option><option>Janne</option>
             </select>
           </label>
-          <label>Määrä (m³)<input id="maara" inputmode="decimal"></label>
-          <label>Tonnit<input id="tonnit" inputmode="decimal"></label>
+          <label>Määrä (m³)<input id="maara" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="none"></label>
+          <label>Tonnit<input id="tonnit" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="none"></label>
           <label>Tuote<input id="tuote" list="tuoteList" autocomplete="off"></label>
-          <label class="note-field">Muuta huomioitavaa<textarea id="huomio" rows="2" autocomplete="off"></textarea></label>
+          <label class="note-field">Muuta huomioitavaa<textarea id="huomio" rows="2" autocomplete="new-password" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="none"></textarea></label>
           <button id="saveBtn" class="btn btn-green btn-big save-btn" type="submit">Tallenna kuorma</button>
         </form>
         <datalist id="lastausList"></datalist>
@@ -104,6 +104,6 @@
       </div>
     </div>
   </div>
-  <script src="script.js?v=20260820-9"></script>
+  <script src="script.js?v=20260820-10"></script>
 </body>
 </html>
